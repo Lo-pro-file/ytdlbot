@@ -12,9 +12,9 @@ import os
 # general settings
 WORKERS: "int" = int(os.getenv("WORKERS", 100))
 PYRO_WORKERS: "int" = int(os.getenv("PYRO_WORKERS", 100))
-APP_ID: "int" = int(os.getenv("APP_ID", 111))
-APP_HASH = os.getenv("APP_HASH", "111")
-TOKEN = os.getenv("TOKEN", "3703WLI")
+APP_ID: "int" = int(os.getenv("APP_ID", 7234399))
+APP_HASH = os.getenv("APP_HASH", "7234399")
+TOKEN = os.getenv("TOKEN", "5666045488:AAFyKF4tvzI0D0xVtPYR3x1dHZHSEqM0KAs")
 
 REDIS = os.getenv("REDIS")
 
@@ -30,14 +30,14 @@ EX = os.getenv("EX", 24 * 3600)
 MULTIPLY = os.getenv("MULTIPLY", 5)  # VIP1 is 5*5-25G, VIP2 is 50G
 USD2CNY = os.getenv("USD2CNY", 6)  # $5 --> ¥30
 
-ENABLE_VIP = os.getenv("VIP", False)
+ENABLE_VIP = os.getenv("", False)
 MAX_DURATION = int(os.getenv("MAX_DURATION", 60))
-AFD_LINK = os.getenv("AFD_LINK", "https://afdian.net/@BennyThink")
-COFFEE_LINK = os.getenv("COFFEE_LINK", "https://www.buymeacoffee.com/bennythink")
-COFFEE_TOKEN = os.getenv("COFFEE_TOKEN")
-AFD_TOKEN = os.getenv("AFD_TOKEN")
-AFD_USER_ID = os.getenv("AFD_USER_ID")
-OWNER = os.getenv("OWNER", "BennyThink")
+AFD_LINK = os.getenv("", "")
+COFFEE_LINK = os.getenv("", "")
+COFFEE_TOKEN = os.getenv("")
+AFD_TOKEN = os.getenv("")
+AFD_USER_ID = os.getenv("")
+OWNER = os.getenv("OWNER", "Opleech")
 
 # limitation settings
 AUTHORIZED_USER: "str" = os.getenv("AUTHORIZED_USER", "")
