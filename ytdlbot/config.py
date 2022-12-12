@@ -40,9 +40,9 @@ AFD_USER_ID = os.getenv("")
 OWNER = os.getenv("OWNER", "Opleech")
 
 # limitation settings
-AUTHORIZED_USER: "str" = os.getenv("AUTHORIZED_USER", "")
+AUTHORIZED_USER: "str" = os.getenv("AUTHORIZED_USER", "-1001829666524")
 # membership requires: the format could be username/chat_id of channel or group
-REQUIRED_MEMBERSHIP: "str" = os.getenv("REQUIRED_MEMBERSHIP", "")
+REQUIRED_MEMBERSHIP: "str" = os.getenv("REQUIRED_MEMBERSHIP", "-1001829666524")
 
 # celery related
 ENABLE_CELERY = os.getenv("ENABLE_CELERY", False)
