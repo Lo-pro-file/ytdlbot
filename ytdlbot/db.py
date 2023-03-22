@@ -86,9 +86,7 @@ class Redis:
         db = MySQL()
         db.cur.execute("select * from vip")
         data = db.cur.fetchall()
-        fd = []
-        for item in data:
-            fd.append([item[0], item[1], sizeof_fmt(item[-1])])
+        fd = [[item[0], item[1], sizeof_fmt(item[-1])] for item in data]
         db_text = self.generate_table(["ID", "username", "quota"], fd)
 
         fd = []
@@ -236,9 +234,7 @@ class InfluxDB:
         token = base64.b64encode(f"{username}:{password}".encode()).decode()
         headers = {"Authorization": f"Basic {token}"}
         r = requests.get("https://celery.dmesg.app/dashboard?json=1", headers=headers)
-        if r.status_code != 200:
-            return dict(data=[])
-        return r.json()
+        return dict(data=[]) if r.status_code != 200 else r.json()
 
     def extract_dashboard_data(self):
         self.data = self.get_worker_data()
@@ -272,7 +268,7 @@ class InfluxDB:
         self.client.write_points(json_body)
 
     def __fill_overall_data(self):
-        active = sum([i["active"] for i in self.data["data"]])
+        active = sum(i["active"] for i in self.data["data"])
         json_body = [
             {
                 "measurement": "active",
