@@ -61,11 +61,7 @@ def private_use(func):
             return
 
         # authorized users check
-        if AUTHORIZED_USER:
-            users = [int(i) for i in AUTHORIZED_USER.split(",")]
-        else:
-            users = []
-
+        users = [int(i) for i in AUTHORIZED_USER.split(",")] if AUTHORIZED_USER else []
         if users and chat_id and chat_id not in users:
             message.reply_text(bot_text.private, quote=True)
             return
@@ -131,8 +127,7 @@ def unsubscribe_handler(client: "Client", message: "types.Message"):
         client.send_message(chat_id, "/unsubscribe channel_id", disable_web_page_preview=True)
         return
 
-    rows = vip.unsubscribe_channel(chat_id, text[1])
-    if rows:
+    if rows := vip.unsubscribe_channel(chat_id, text[1]):
         text = f"Unsubscribed from {text[1]}"
     else:
         text = "Unable to find the channel."
@@ -142,9 +137,9 @@ def unsubscribe_handler(client: "Client", message: "types.Message"):
 @app.on_message(filters.command(["patch"]))
 def patch_handler(client: "Client", message: "types.Message"):
     username = message.from_user.username
-    chat_id = message.chat.id
     if username == OWNER:
         celery_app.control.broadcast("hot_patch")
+        chat_id = message.chat.id
         client.send_chat_action(chat_id, "typing")
         client.send_message(chat_id, "Oorah!")
         hot_patch()
@@ -153,8 +148,8 @@ def patch_handler(client: "Client", message: "types.Message"):
 @app.on_message(filters.command(["uncache"]))
 def uncache_handler(client: "Client", message: "types.Message"):
     username = message.from_user.username
-    link = message.text.split()[1]
     if username == OWNER:
+        link = message.text.split()[1]
         count = VIP().del_cache(link)
         message.reply_text(f"{count} cache(s) deleted.", quote=True)
 
@@ -191,8 +186,8 @@ def terms_handler(client: "Client", message: "types.Message"):
 @app.on_message(filters.command(["sub_count"]))
 def sub_count_handler(client: "Client", message: "types.Message"):
     username = message.from_user.username
-    chat_id = message.chat.id
     if username == OWNER:
+        chat_id = message.chat.id
         with BytesIO() as f:
             f.write(VIP().sub_count().encode("u8"))
             f.name = "subscription count.txt"
@@ -354,7 +349,7 @@ def audio_callback(client: "Client", callback_query: types.CallbackQuery):
         callback_query.message.reply_text("Audio conversion is disabled now.")
         return
 
-    callback_query.answer(f"Converting to audio...please wait patiently")
+    callback_query.answer("Converting to audio...please wait patiently")
     Redis().update_metrics("audio_request")
     vmsg = callback_query.message
     audio_entrance(vmsg, client)
@@ -371,8 +366,7 @@ def periodic_sub_check():
     vip = VIP()
     exceptions = pyrogram.errors.exceptions
     for cid, uids in vip.group_subscriber().items():
-        video_url = vip.has_newer_update(cid)
-        if video_url:
+        if video_url := vip.has_newer_update(cid):
             logging.info(f"periodic update:{video_url} - {uids}")
             for uid in uids:
                 try:
